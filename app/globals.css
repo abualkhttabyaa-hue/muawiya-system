@@ -2,19 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  background: black;
-}
-
 body {
   background-color: black;
   color: white;
+  direction: rtl;
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
 }
 
-::-webkit-scrollbar {
-  width: 5px;
-}
-::-webkit-scrollbar-thumb {
-  background: #D4AF37;
-  border-radius: 10px;
-}
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 10px; }
