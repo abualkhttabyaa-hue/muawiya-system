@@ -1,43 +1,37 @@
 "use client";
-import { useState } from "react";
-import { supabase } from "../../src/lib/supabase";
+import React, { useState } from "react";
+import { supabase } from "../../lib/supabase";
 
-export default function Login() {
-  const [isL, setL] = useState(true);
-  const [e, setE] = useState("");
-  const [p, setP] = useState("");
-  const [n, setN] = useState("");
-  const [s, setS] = useState("");
+export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [status, setStatus] = useState("");
 
-  const handle = async (ev: any) => {
-    ev.preventDefault(); setS("انتظر...");
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("جاري التحقق...");
     try {
-      if (isL) {
-        const { error } = await supabase.auth.signInWithPassword({ email:e, password:p });
-        if (error) throw error;
-        window.location.replace("/dashboard");
-      } else {
-        const { error } = await supabase.auth.signUp({ email:e, password:p, options:{data:{display_name:n}} });
-        if (error) throw error;
-        setS("تم الطلب! انتظر تفعيل المدير."); setL(true);
-      }
-    } catch (err: any) { setS("خطأ: " + err.message); }
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      setStatus("تم النجاح! جاري التوجيه...");
+      window.location.href = "/dashboard";
+    } catch (err: any) {
+      setStatus("خطأ: " + err.message);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-4 text-right" dir="rtl">
-      <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-[2rem] w-full max-w-md shadow-2xl">
-        <img src="/logo-center.png" className="w-20 h-20 mx-auto mb-4" />
-        <h1 className="text-white text-lg font-black text-center mb-1">مركز معاوية لتحفيظ القرآن الكريم وعلومه</h1>
-        <p className="text-gold text-[10px] text-center mb-8 uppercase font-bold">نظام الإدارة الذكي</p>
-        <form onSubmit={handle} className="space-y-4">
-          {!isL && <input type="text" placeholder="الاسم الكامل" className="w-full bg-black p-4 rounded-2xl text-white outline-none border border-zinc-800" onChange={x=>setN(ev.target.value)} required />}
-          <input type="email" placeholder="البريد" className="w-full bg-black p-4 rounded-2xl text-white outline-none border border-zinc-800" onChange={x=>setE(ev.target.value)} required />
-          <input type="password" placeholder="كلمة المرور" className="w-full bg-black p-4 rounded-2xl text-white outline-none border border-zinc-800" onChange={x=>setP(ev.target.value)} required />
-          <button className="w-full bg-gold text-black font-black py-4 rounded-2xl shadow-lg">{isL ? "دخول" : "انضمام كمعلم"}</button>
+    <div className="min-h-screen bg-black flex items-center justify-center p-4">
+      <div className="bg-[#0A0A0A] border border-zinc-800 p-8 rounded-[2.5rem] w-full max-w-md shadow-2xl text-center">
+        <img src="/logo-center.png" className="w-20 h-20 mx-auto mb-4" alt="logo" />
+        <h1 className="text-white text-lg font-black mb-1">مركز معاوية لتحفيظ القرآن الكريم وعلومه</h1>
+        <p className="text-yellow-600 text-[10px] font-bold mb-8 uppercase">نظام الإدارة الذكي</p>
+        <form onSubmit={handleLogin} className="space-y-4">
+          <input type="email" placeholder="البريد الإلكتروني" className="w-full bg-black border border-zinc-800 p-4 rounded-2xl text-white outline-none" onChange={(e) => setEmail(e.target.value)} required />
+          <input type="password" placeholder="كلمة المرور" className="w-full bg-black border border-zinc-800 p-4 rounded-2xl text-white outline-none" onChange={(e) => setPassword(e.target.value)} required />
+          <button type="submit" className="w-full bg-yellow-600 text-black font-black py-4 rounded-2xl shadow-lg active:scale-95 transition-transform font-bold">تسجيل الدخول</button>
         </form>
-        <button onClick={()=>setL(!isL)} className="w-full mt-6 text-zinc-500 text-xs">{isL ? "طلب انضمام كمعلم جديد" : "لديك حساب؟ دخول"}</button>
-        {s && <p className="mt-4 text-gold text-center text-xs font-bold">{s}</p>}
+        {status && <div className="mt-4 p-3 bg-zinc-900 rounded-xl text-[10px] text-yellow-200 border border-yellow-900/20">{status}</div>}
       </div>
     </div>
   );
