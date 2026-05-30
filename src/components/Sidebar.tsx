@@ -18,19 +18,19 @@ export default function Sidebar({ profile, isOpen, onClose }: any) {
   return (
     <>
       {isOpen && <div className="fixed inset-0 bg-black/80 z-40 md:hidden" onClick={onClose}></div>}
-      <div className={`fixed md:static inset-y-0 right-0 w-64 bg-zinc-950 border-l border-zinc-800 p-6 flex flex-col z-50 transition-transform ${isOpen ? 'translate-x-0' : 'translate-x-full'} md:translate-x-0 shadow-2xl`}>
-        <div className="text-center mb-10">
-          <img src="/logo-center.png" className="w-16 h-16 mx-auto mb-2" />
-          <h2 className="text-gold font-black text-[10px]">مركز معاوية</h2>
+      <div className={`fixed md:static inset-y-0 right-0 w-64 bg-zinc-950 border-l border-zinc-800 p-6 flex flex-col z-50 transition-transform duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'} md:translate-x-0 shadow-2xl`}>
+        <div className="text-center mb-10 pt-4">
+          <img src="/logo-center.png" className="w-16 h-16 mx-auto mb-4" />
+          <h2 className="text-gold font-black text-sm uppercase tracking-tighter leading-tight">مركز معاوية لتحفيظ القرآن الكريم</h2>
         </div>
         <nav className="flex-1 space-y-2">
-          {menu.map((i) => (
-            <a key={i.name} href={i.path} className="flex items-center gap-3 p-4 text-zinc-400 hover:bg-gold/10 hover:text-gold rounded-xl transition font-bold text-sm">
-              {i.icon} <span>{i.name}</span>
+          {menu.map((item) => (
+            <a key={item.name} href={item.path} className="flex items-center gap-4 p-4 text-zinc-400 hover:bg-gold/5 hover:text-gold rounded-2xl transition font-bold text-sm group">
+              {item.icon} <span>{item.name}</span>
             </a>
           ))}
         </nav>
-        <button onClick={() => supabase.auth.signOut().then(() => window.location.href = '/login')} className="mt-auto p-4 text-red-500 font-bold flex gap-2 border-t border-zinc-900 pt-6">
+        <button onClick={() => supabase.auth.signOut().then(() => window.location.href = '/login')} className="mt-auto flex items-center gap-3 p-4 text-red-500 hover:bg-red-500/10 rounded-2xl transition font-bold text-sm">
           <LogOut size={18}/> <span>تسجيل الخروج</span>
         </button>
       </div>
